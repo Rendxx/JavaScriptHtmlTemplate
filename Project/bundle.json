@@ -7,9 +7,9 @@
  */
 {
   "less": {
-    "index": "#less#/index.less"
+    "index": [ "#less#/index.less" ]
   },
   "js": {
-    "index": "#js#/index.js"
+    "index": [ "#js#/index.js" ]
   }
 }

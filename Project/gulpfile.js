@@ -41,7 +41,7 @@ eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
 
 // task --------------------------------------------------
 // copy lib from bower to www-root
-gulp.task("_copy", ['_cleanLib'], function (cb) { 
+gulp.task("_copyBower", ['_cleanLib'], function (cb) { 
     // bower
     var bower = {
         "jquery": "/jquery/dist/jquery*.{js,map}"
