@@ -16,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bower.json" />
+    <None Include="bundle.json" />
+    <None Include="LICENSE" />
+    <None Include="README.md" />
     <None Include="src\less\index.less" />
     <None Include="package.json" />
   </ItemGroup>

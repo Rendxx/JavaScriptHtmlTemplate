@@ -1,5 +1,6 @@
 ﻿/// <binding BeforeBuild='_build' ProjectOpened='_watch' />
 var gulp = require('gulp'),
+    fs = require("fs"),
     path = require('path'),
     del = require("del"),
     less = require('gulp-less'),
@@ -13,45 +14,37 @@ var gulp = require('gulp'),
 var project = {
     webroot: 'wwwroot'
 };
+
 var paths = {
     // less
     less: {
-        src: 'src/less/',
+        src: 'src/less',
         dest: project.webroot + '/css/'
     },
 
     // js
     js: {
-        src: 'src/js/',
+        src: 'src/js',
         dest: project.webroot + '/js/',
     },
 
     // bower
     bower: {
-        src: 'bower_components/',
+        src: 'bower_components',
         dest: project.webroot + '/lib/'
     }
 };
 
+eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
+    .replace(/#less#/g, paths.less.src)
+    .replace(/#js#/g, paths.js.src));
 
-var filePaths = {
-    less: {
-        "index": paths.less.src + "index.less"
-    },
-    js: {
-        "index": paths.js.src + "index.js"
-    }
-};
-
-var _cache = null;
-
-// Default task -----------------------------------------------------
-
+// task --------------------------------------------------
 // copy lib from bower to www-root
 gulp.task("_copy", ['_cleanLib'], function (cb) { 
     // bower
     var bower = {
-        "jquery": "jquery/dist/jquery*.{js,map}"
+        "jquery": "/jquery/dist/jquery*.{js,map}"
     }
     for (var destinationDir in bower) {
         gulp.src(paths.bower.src + bower[destinationDir])
@@ -61,21 +54,19 @@ gulp.task("_copy", ['_cleanLib'], function (cb) {
 
 // watch modifying of less files
 gulp.task('_watch', function () {
-    watch(paths.less.src + "**/*.less", function () {
+    watch(paths.less.src + "/**/*.less", function () {
         gulp.start('less');
     });
-    watch(paths.js.src + "**/*.js", function () {
+    watch(paths.js.src + "/**/*.js", function () {
         gulp.start('js');
     });
 });
 
-// Clean task -----------------------------------------------------
+// Clean task
 gulp.task('_cleanLib', function (cb) {
     del([paths.bower.dest], cb);
     cb(null);
 });
-
-// User task -----------------------------------------------------
 
 // .............................. Handle style file
 // transfrom less to css file
