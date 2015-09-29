@@ -37,4 +37,6 @@ Gulp is used to process JavaScript and LESS files.
 See **gulpfile.js** for details.
   
 # Setup
-1. Download the template and open 
+1. Download the template zip file
+2. Move the zip file to template directory.
+   *the*
