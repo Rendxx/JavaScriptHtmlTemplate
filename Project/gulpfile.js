@@ -36,6 +36,7 @@ var paths = {
 };
 
 eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
+    .replace(/#bower#/g, paths.bower.src)
     .replace(/#less#/g, paths.less.src)
     .replace(/#js#/g, paths.js.src));
 
@@ -43,11 +44,9 @@ eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
 // copy lib from bower to www-root
 gulp.task("_copyBower", ['_cleanLib'], function (cb) { 
     // bower
-    var bower = {
-        "jquery": "/jquery/dist/jquery*.{js,map}"
-    }
-    for (var destinationDir in bower) {
-        gulp.src(paths.bower.src + bower[destinationDir])
+    var filePath = filePaths.bower;
+    for (var destinationDir in filePath) {
+        gulp.src(filePath[destinationDir])
           .pipe(gulp.dest(paths.bower.dest));
     }
 });

@@ -1,11 +1,15 @@
 ﻿/*
  * Path Variable:
+ *    #bower# : bower source derectory
  *    #less# : less source derectory
  *    #js# : javascript source derectory
  *
  * Directory paths can be changed in gulpfile.js
  */
 {
+  "bower": {
+    "jquery": "#bower#/jquery/dist/jquery*.{js,map}"
+  },
   "less": {
     "index": [ "#less#/index.less" ]
   },
