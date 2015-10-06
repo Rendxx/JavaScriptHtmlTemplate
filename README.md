@@ -1,7 +1,7 @@
 # JavaScriptHtml Template
 A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp for environment setup.
 
-*Latest Version Download: [Simple Webpage with JS and LESS v2.0.0][Latest]*
+*Latest Version Download: [Simple Webpage with JS and LESS v2.0.1][Latest]*
 
 # Structure
 - **src/**   
@@ -95,5 +95,5 @@ See [LICENSE][] for more info.
 
 [Templates Directory]: https://msdn.microsoft.com/en-us/library/y3kkate1.aspx "How to: Locate and Organize Project and Item Templates"
 [Gulp]: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md "Gulp Doc"
-[Latest]: https://github.com/Rendxx/JavaScriptHtmlTemplate/releases/tag/2.0.0 "Download Page"
+[Latest]: https://github.com/Rendxx/JavaScriptHtmlTemplate/releases/tag/2.0.1 "Download Page"
 [LICENSE]: https://github.com/Rendxx/JavaScriptHtmlTemplate/blob/master/LICENSE
