@@ -1,7 +1,7 @@
-# JavaScriptHtmlTemplate
+# JavaScriptHtml Template
 A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp for environment setup.
 
-*Latest Version Download: [Simple Webpage with JS and LESS v1.0.0][Latest]*
+*Latest Version Download: [Simple Webpage with JS and LESS v2.0.0][Latest]*
 
 # Structure
 - **src/**   
@@ -26,7 +26,7 @@ A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp f
   HTML file
 
 - **bundle.json**  
-  Use to set bundle / minimization / processing of JavaScript and LESS files.  
+  Use to set bundle / minimization / processing of Bower libraries, JavaScript files and LESS files.  
   **bower.json**  
   Bower file  
   **package.json**  
@@ -89,6 +89,11 @@ Gulp is used to process JavaScript and LESS files.
     To use JavaScript/LESS files in HTML file, add links to the processed files in *wwwroot\\*.
 
 
+## License 
+Copyright &copy; 2015, Rendxx. (MIT License)  
+See [LICENSE][] for more info.
+
 [Templates Directory]: https://msdn.microsoft.com/en-us/library/y3kkate1.aspx "How to: Locate and Organize Project and Item Templates"
 [Gulp]: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md "Gulp Doc"
-[Latest]: https://github.com/Rendxx/JavaScriptHtmlTemplate/releases/tag/1.0.0 "Download Page"
+[Latest]: https://github.com/Rendxx/JavaScriptHtmlTemplate/releases/tag/2.0.0 "Download Page"
+[LICENSE]: https://github.com/Rendxx/JavaScriptHtmlTemplate/blob/master/LICENSE
