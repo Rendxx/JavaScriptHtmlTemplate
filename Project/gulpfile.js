@@ -84,7 +84,7 @@ var watchPath = p.watch;
 
 // task --------------------------------------------------
 // copy lib from bower to www-root
-gulp.task("_copyBower", ['_cleanLib'], function (cb) {
+gulp.task("_bowerCopy", ['_bowerClear'], function (cb) {
     // bower
     var f = filePath.bower;
     for (var dest in f) {
@@ -93,6 +93,15 @@ gulp.task("_copyBower", ['_cleanLib'], function (cb) {
               .pipe(gulp.dest(dest));
         }
     }
+    cb(null);
+});
+
+// Clean task
+gulp.task('_bowerClear', function (cb) {
+    var f = filePath.bower;
+    var clearDest = [];
+    for (var dest in f) clearDest.push(dest + "*");
+    del(clearDest);
     cb(null);
 });
 
@@ -126,14 +135,6 @@ gulp.task('_watch', function () {
     });
 });
 
-// Clean task
-gulp.task('_cleanLib', function (cb) {
-    var f = filePath.bower;
-    var clearDest = [];
-    for (var dest in f) clearDest.push(dest);
-    del(clearDest, cb);
-    cb(null);
-});
 
 // .............................. Handle style file
 // transfrom less to css file
