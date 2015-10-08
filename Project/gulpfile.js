@@ -1,69 +1,137 @@
-﻿/// <binding BeforeBuild='_build' ProjectOpened='_watch' />
+﻿/// <binding ProjectOpened='_watch, _copyBower' />
 var gulp = require('gulp'),
     fs = require("fs"),
-    path = require('path'),
     del = require("del"),
     less = require('gulp-less'),
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps'),
     lzmajs = require('gulp-lzmajs');
 
 // configuration --------------------------------------------------
-var project = {
-    webroot: 'wwwroot'
-};
+var initPath = function () {
+    eval("var pathData = " + String(fs.readFileSync("./bundle.json")));
 
-var paths = {
-    // less
-    less: {
-        src: 'src/less',
-        dest: project.webroot + '/css/'
-    },
+    var filePath = {};
+    var paths = {};
 
-    // js
-    js: {
-        src: 'src/js',
-        dest: project.webroot + '/js/',
-    },
+    var p = {
+        file: {},
+        watch: {}
+    };
 
-    // bower
-    bower: {
-        src: 'bower_components',
-        dest: project.webroot + '/lib/'
+    // init regex for replacing path patterns
+    var createRegs = function (patterns) {
+        var regs = {};
+        for (var pathName in patterns)
+            regs[pathName] = new RegExp('#' + pathName + '#', 'gi');
+        return regs;
+    };
+
+    // replace all path pattern
+    var replacePath = function (data, regs, patterns) {
+        for (var pathName in regs) {
+            data = data.replace(regs[pathName], patterns[pathName]);
+        }
+        return data;
+    };
+
+    for (var group in pathData.bundle) {
+        p.file[group] = {};
+        p.watch[group] = [];
+        var patterns = pathData.path[group],
+            bundles = pathData.bundle[group],
+            regs = createRegs(patterns);
+        for (var bundleName in bundles) {
+            // replace patterns in bundle value
+            if (typeof bundles[bundleName] == 'string') {
+                bundles[bundleName] = replacePath(bundles[bundleName], regs, patterns);
+                p.watch[group].push(bundles[bundleName]);
+            } else {
+                for (var i = 0, l = bundles[bundleName].length; i < l; i++) {
+                    bundles[bundleName][i] = replacePath(bundles[bundleName][i], regs, patterns);
+                    p.watch[group].push(bundles[bundleName][i]);
+                }
+            }
+
+            // replace patterns in bundle name
+            var idx = bundleName.lastIndexOf('/');
+            var bundleName_dest = '/';
+            var bundleName_file = bundleName;
+            if (idx < 0) {
+                bundleName_dest = '/';
+                bundleName_file = bundleName;
+            } else {
+                bundleName_dest = bundleName.substring(0, idx + 1);
+                bundleName_file = bundleName.substring(idx + 1);
+            }
+
+            bundleName_dest = replacePath(bundleName_dest, regs, patterns);
+            if (!(bundleName_dest in p.file[group])) p.file[group][bundleName_dest] = {};
+            p.file[group][bundleName_dest][bundleName_file] = pathData.bundle[group][bundleName];
+        }
     }
-};
 
-eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
-    .replace(/#bower#/g, paths.bower.src)
-    .replace(/#less#/g, paths.less.src)
-    .replace(/#js#/g, paths.js.src));
+    return p;
+};
+var p = initPath();
+
+var filePath = p.file;
+var watchPath = p.watch;
+
 
 // task --------------------------------------------------
 // copy lib from bower to www-root
-gulp.task("_copyBower", ['_cleanLib'], function (cb) { 
+gulp.task("_copyBower", ['_cleanLib'], function (cb) {
     // bower
-    var filePath = filePaths.bower;
-    for (var destinationDir in filePath) {
-        gulp.src(filePath[destinationDir])
-          .pipe(gulp.dest(paths.bower.dest));
+    var f = filePath.bower;
+    for (var dest in f) {
+        for (var pkg in f[dest]) {
+            gulp.src(f[dest][pkg])
+              .pipe(gulp.dest(dest));
+        }
     }
+    cb(null);
 });
 
 // watch modifying of less files
 gulp.task('_watch', function () {
-    watch(paths.less.src + "/**/*.less", function () {
+    gulp.start('less');
+    gulp.start('js');
+    var lessWatcher = watch(watchPath.less, function () {
         gulp.start('less');
     });
-    watch(paths.js.src + "/**/*.js", function () {
+    var jsWatcher = watch(watchPath.js, function () {
         gulp.start('js');
+    });
+    watch("bundle.json", function () {
+        var p = initPath();
+
+        filePath = p.file;
+        watchPath = p.watch;
+        gulp.start('less');
+        gulp.start('js');
+
+        lessWatcher.close();
+        jsWatcher.close();
+
+        lessWatcher = watch(watchPath.less, function () {
+            gulp.start('less');
+        });
+        jsWatcher = watch(watchPath.js, function () {
+            gulp.start('js');
+        });
     });
 });
 
 // Clean task
 gulp.task('_cleanLib', function (cb) {
-    del([paths.bower.dest], cb);
+    var f = filePath.bower;
+    var clearDest = [];
+    for (var dest in f) clearDest.push(dest);
+    del(clearDest, cb);
     cb(null);
 });
 
@@ -71,32 +139,40 @@ gulp.task('_cleanLib', function (cb) {
 // transfrom less to css file
 // combine multiple files
 gulp.task('less', function () {
-    var filePath = filePaths.less;
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(less())
-            .pipe(concat(destFile + '.css'))
-            .pipe(gulp.dest(paths.less.dest));
+    var f = filePath.less;
+    for (var dest in f) {
+        for (var bundle in f[dest]) {
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(sourcemaps.init())
+                .pipe(less())
+                .pipe(concat(bundle + '.css'))
+                .pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(dest));
+        }
     }
 });
-
 // .............................. Handle js file
 // combine & minimize js file
 gulp.task('js', function () {
-    var filePath = filePaths.js;
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(concat(destFile + '.js'))
-            .pipe(gulp.dest(paths.js.dest))
-    }
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(concat(destFile + '.min.js'))
-            .pipe(uglify())
-            .pipe(lzmajs())
-            .pipe(gulp.dest(paths.js.dest));
+    var f = filePath.js;
+    for (var dest in f) {
+        for (var bundle in f[dest]) {
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(sourcemaps.init())
+                .pipe(concat(bundle + '.js'))
+                .pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(dest));
+
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(sourcemaps.init())
+                .pipe(concat(bundle + '.min.js'))
+                .pipe(uglify())
+                .pipe(lzmajs())
+                .pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(dest));
+        }
     }
 });

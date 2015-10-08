@@ -1,6 +1,6 @@
 {
-	"name": "bower",
-	"license": "Apache-2.0",
+	"name": "JavaScriptTemplate",
+	"license": "MIT",
 	"private": true,
 	"dependencies": {
     "jquery": "1.11.2"
