@@ -1,7 +1,7 @@
 # JavaScriptHtml Template
 A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp for environment setup.
 
-*Latest Version Download: [Simple Webpage with JS and LESS v2.0.1][Latest]*
+*Latest Version Download: [Simple Webpage with JS and LESS v2.1.1][Latest]*
 
 # Structure
 - **src/**   
@@ -45,16 +45,20 @@ A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp f
     Click **File** > **New** > **Project** > **Installed** > **JavaScript**  
     Select **Simple Webpage with JS and LESS**
 
-4. Open and save **package.json** to install npm packages  
+4. Wait for Visual Studio to setup NPM Bower and Gulp.  
+   If Visual Studio does not automatically setup them, follow step 5 and 6 to do it manually.   
+   Otherwise, you are all set. 
+
+5. Open and save **package.json** to install npm packages  
     Open and save **bower.json** to install bower packages  
     Open and save **gulpfile.json** to setup gulp task
 
-5. Run gulp task **_copyBower** to copy bower packages  
+6. Run gulp task **_copyBower** to copy bower packages  
     Run gulp task **js** to process JavaScript files  
     Run gulp task **less** to process Less files  
     Run gulp task **_watch** if you want to setup automatic processing on editing JavaScript/Less files  
 
-6. Now you are all set. Open **index.html** in browser to see the default page.
+7. Open **index.html** in browser to see the default page.
 
 # Gulp Task
 Gulp is used to process JavaScript and LESS files.  
@@ -72,21 +76,22 @@ Gulp is used to process JavaScript and LESS files.
   Setup automatic processing on editing JavaScript/Less files.  
   This task will run automatically when this project opens after gulp set.
 
-- **\_copyBower**  
-  Copy selected files from Bower packages. It only need to be ran once after installing Bower packages.
+- **\_bowerCopy**  
+  Copy selected files from Bower packages. It only need to be ran once after installing Bower packages.  
+  This task will run automatically when this project opens after gulp set.
 
-- **\_cleanLib**  
-  Clear the 3rd-party directory. Called by task **\_copyBower**.
+- **\_bowerClear**  
+  Clear copied bower libraries. Called by task **\_bowerCopy**.
 
 # Usage
-1. **Modifying JavaScript/LESS Files**  
-    All JavaScript/LESS files should be placed in the corresponding directories in *src/*.
+1. **Changing JavaScript/LESS Files**  
+   Add / Delete / Edit JavaScript and LESS source files as you wish.
 
 2. **Add Bundle**  
-    All JavaScript/LESS files should be listed in *bundle.json*. Otherwise it will be ignored by processing tasks.
+   Edit **bundle.json** to make Gulp task process your source files.
 
 3. **Add Link in HTML File**  
-    To use JavaScript/LESS files in HTML file, add links to the processed files in *wwwroot\\*.
+   Don't forget add a link to JavaScript / CSS files in HTML file.
 
 
 ## License 
@@ -95,5 +100,5 @@ See [LICENSE][] for more info.
 
 [Templates Directory]: https://msdn.microsoft.com/en-us/library/y3kkate1.aspx "How to: Locate and Organize Project and Item Templates"
 [Gulp]: https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md "Gulp Doc"
-[Latest]: https://github.com/Rendxx/JavaScriptHtmlTemplate/releases/tag/2.0.1 "Download Page"
+[Latest]: https://github.com/Rendxx/JavaScriptHtmlTemplate/releases/tag/2.1.1 "Download Page"
 [LICENSE]: https://github.com/Rendxx/JavaScriptHtmlTemplate/blob/master/LICENSE
