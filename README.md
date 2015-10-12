@@ -3,6 +3,35 @@ A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp f
 
 *Latest Version Download: [Simple Webpage with JS and LESS v2.1.1][Latest]*
 
+# Install
+1. Download the template zip file
+
+2. Move the zip file to Visual Studio custom template directory.  
+    Path: *\\My Documents\\Visual Studio Version\\Templates\\ProjectTemplates\\*  
+    More information: [How to: Locate and Organize Project and Item Templates][Templates Directory] 
+
+3. Open Visual Studio.  
+    Click **File** > **New** > **Project** > **Installed** > **JavaScript**  
+    Select **Simple Webpage with JS and LESS**
+
+4. Wait for Visual Studio to setup NPM Bower and Gulp.  
+   If Visual Studio does not automatically setup them, follow step 5 and 6 to do it manually.   
+   Otherwise, you are all set. 
+
+5. Open and save **package.json** to install npm packages  
+    Open and save **bower.json** to install bower packages  
+    Open and save **gulpfile.json** to setup gulp task
+
+6. Run gulp task **_bowerCopy** to copy bower packages  
+    Run gulp task **js** to process JavaScript files  
+    Run gulp task **less** to process Less files  
+    Run gulp task **_watch** if you want to setup automatic processing on editing JavaScript/Less files  
+
+7. Open **index.html** in browser to see the default page.
+
+![preview](https://raw.githubusercontent.com/Rendxx/BowerTemplate/master/screenshot-success.png)  
+> Installation success if you see this screen.
+
 # Structure
 - **src/**   
   Directory of source files.  
@@ -34,32 +63,6 @@ A Visual Studio template for JavaScript / HTML / Less. With Npm / Bower / Gulp f
   **gulpfile.js**  
   Gulp file  
   
-# Setup
-1. Download the template zip file
-
-2. Move the zip file to Visual Studio custom template directory.  
-    Path: *\\My Documents\\Visual Studio Version\\Templates\\ProjectTemplates\\*  
-    More information: [How to: Locate and Organize Project and Item Templates][Templates Directory] 
-
-3. Open Visual Studio.  
-    Click **File** > **New** > **Project** > **Installed** > **JavaScript**  
-    Select **Simple Webpage with JS and LESS**
-
-4. Wait for Visual Studio to setup NPM Bower and Gulp.  
-   If Visual Studio does not automatically setup them, follow step 5 and 6 to do it manually.   
-   Otherwise, you are all set. 
-
-5. Open and save **package.json** to install npm packages  
-    Open and save **bower.json** to install bower packages  
-    Open and save **gulpfile.json** to setup gulp task
-
-6. Run gulp task **_copyBower** to copy bower packages  
-    Run gulp task **js** to process JavaScript files  
-    Run gulp task **less** to process Less files  
-    Run gulp task **_watch** if you want to setup automatic processing on editing JavaScript/Less files  
-
-7. Open **index.html** in browser to see the default page.
-
 # Gulp Task
 Gulp is used to process JavaScript and LESS files.  
 [More information about Gulp][Gulp]
@@ -92,7 +95,6 @@ Gulp is used to process JavaScript and LESS files.
 
 3. **Add Link in HTML File**  
    Don't forget add a link to JavaScript / CSS files in HTML file.
-
 
 ## License 
 Copyright &copy; 2015, Rendxx. (MIT License)  
