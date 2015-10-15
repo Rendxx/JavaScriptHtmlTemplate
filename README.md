@@ -96,7 +96,7 @@ Gulp is used to process JavaScript and LESS files.
 3. **Add Link in HTML File**  
    Don't forget add a link to JavaScript / CSS files in HTML file.
 
-## License 
+# License 
 Copyright &copy; 2015, Rendxx. (MIT License)  
 See [LICENSE][] for more info.
 
